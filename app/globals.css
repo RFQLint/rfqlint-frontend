@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --ink: #1a1d18;
+  --bg: #eef0e6;
+  --bg-glow-a: #d9c896;
+  --bg-glow-b: #a3c2ae;
+  --glass: rgba(255, 255, 255, 0.5);
+  --glass-strong: rgba(255, 255, 255, 0.72);
+  --hairline: rgba(70, 75, 55, 0.18);
+  --shadow: rgba(20, 25, 15, 0.14);
+  --sweep: rgba(255, 255, 255, 0.85);
+  --pass: #0f6e5c;
+  --fail: #a3402c;
+  --muted: #5f6355;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --ink: #eef0e6;
+    --bg: #0d0f0a;
+    --bg-glow-a: #3d3420;
+    --bg-glow-b: #1a2e22;
+    --glass: rgba(255, 255, 255, 0.045);
+    --glass-strong: rgba(255, 255, 255, 0.09);
+    --hairline: rgba(255, 255, 255, 0.13);
+    --shadow: rgba(0, 0, 0, 0.5);
+    --sweep: rgba(255, 255, 255, 0.5);
+    --pass: #4fd8ba;
+    --fail: #f0876c;
+    --muted: #9ba192;
   }
 }
 
+@theme inline {
+  --color-ink: var(--ink);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-hairline: var(--hairline);
+  --color-pass: var(--pass);
+  --color-fail: var(--fail);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  border-color: var(--hairline);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Same recipe as the three sibling frontends, with a gold/sage palette
+   distinct from each (warm parchment/teal-tan, cool slate/blue-violet,
+   warm terracotta/peach-rose). */
+.backdrop-field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.backdrop-field::before,
+.backdrop-field::after {
+  content: "";
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+.backdrop-field::before {
+  background: var(--bg-glow-a);
+  top: -20%;
+  left: -10%;
+}
+
+.backdrop-field::after {
+  background: var(--bg-glow-b);
+  bottom: -25%;
+  right: -15%;
+  animation-delay: -13s;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(6%, 8%) scale(1.08);
+  }
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  box-shadow: 0 1px 2px var(--shadow);
+}
+
+.glass-strong {
+  background: var(--glass-strong);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--hairline);
+  border-radius: 20px;
+}
+
+.sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.sweep::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(75deg, transparent, var(--sweep), transparent);
+  opacity: 0;
+  transform: translateX(-40%) rotate(0deg);
+  pointer-events: none;
+}
+
+.sweep:hover::after,
+.sweep:focus-visible::after {
+  opacity: 0.35;
+  animation: sweep 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes sweep {
+  from {
+    transform: translate(-130%, 0);
+  }
+  to {
+    transform: translate(230%, 0);
+  }
+}
+
+.pill {
+  border-radius: 9999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop-field::before,
+  .backdrop-field::after,
+  .sweep::after {
+    animation: none;
+  }
 }
