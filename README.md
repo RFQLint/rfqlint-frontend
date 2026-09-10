@@ -87,7 +87,7 @@ highlight on hover.
 |---|---|
 | `sep24-conformance-frontend` | Warm parchment / near-black, teal-tan glow |
 | `soroban-ttl-doctor-frontend` | Cool slate / near-black, blue-violet glow |
-| `sep31-conformance-frontend` | Warm terracotta / near-black, peach-rose glow |
+| `corridorlint-frontend` | Warm terracotta / near-black, peach-rose glow |
 | **This repo** | Cool sage / near-black, gold-sage glow |
 
 Same mechanism every time; only the palette changes.
