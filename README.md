@@ -1,25 +1,25 @@
-# sep38-conformance-frontend
+# rfqlint-frontend
 
 Web UI for the SEP-38 conformance checker: enter an anchor's domain, run
 the check, see a live pass/fail report, and browse every quote server
 that's been verified and published to the
-[on-chain registry](https://github.com/RFQLint/sep38-attestation-registry).
+[on-chain registry](https://github.com/RFQLint/rfqlint-registry).
 The fourth product on this shared design system, retargeted at SEP-38.
 
 Part of a four-repo project:
 
-- [`sep38-conformance`](https://github.com/RFQLint/sep38-conformance) — the checking library + CLI.
-- [`sep38-conformance-backend`](https://github.com/RFQLint/sep38-conformance-backend) — the API this frontend calls.
-- [`sep38-attestation-registry`](https://github.com/RFQLint/sep38-attestation-registry) — the Soroban contract results get published to.
+- [`rfqlint`](https://github.com/RFQLint/rfqlint) — the checking library + CLI.
+- [`rfqlint-backend`](https://github.com/RFQLint/rfqlint-backend) — the API this frontend calls.
+- [`rfqlint-registry`](https://github.com/RFQLint/rfqlint-registry) — the Soroban contract results get published to.
 - **This repo** — the surface for all three.
 
 ```mermaid
 flowchart LR
     User((User)) -->|enters a domain| FE[This app]
-    FE -->|POST /api/checks| BE[sep38-conformance-backend]
-    BE -->|runs the check| Lib[sep38-conformance]
+    FE -->|POST /api/checks| BE[rfqlint-backend]
+    BE -->|runs the check| Lib[rfqlint]
     Lib -->|GET stellar.toml, /info, /prices, /price| Anchor[(Anchor)]
-    BE -->|on pass: attest| Contract[sep38-attestation-registry]
+    BE -->|on pass: attest| Contract[rfqlint-registry]
     FE -->|GET /api/registry| BE
     FE -.->|links out to| Explorer[stellar.expert tx view]
 ```
@@ -51,7 +51,7 @@ every attestation is real work done by the backend and the contract.
 
 ## Glossary
 
-See [`sep38-conformance`'s glossary](https://github.com/RFQLint/sep38-conformance#glossary)
+See [`rfqlint`'s glossary](https://github.com/RFQLint/rfqlint#glossary)
 for the underlying SEP-38 vocabulary (quote server, firm quote,
 indicative price, delivery method).
 
@@ -147,7 +147,7 @@ this report right now (see the backend's own README).
 
 | Variable | Default | Description |
 |---|---|---|
-| `NEXT_PUBLIC_API_URL` | `http://localhost:3003` | Base URL of `sep38-conformance-backend`. |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:3003` | Base URL of `rfqlint-backend`. |
 
 ## Running locally
 
@@ -157,7 +157,7 @@ npm install
 npm run dev
 ```
 
-Needs `sep38-conformance-backend` running — this app has nothing to show
+Needs `rfqlint-backend` running — this app has nothing to show
 without it.
 
 ## Verification
@@ -219,7 +219,7 @@ per product.
 **Why does this app show the raw HTTP status in a failure message (e.g.
 "HTTP 502...") instead of a friendlier, translated error?** Because
 `ReportView` renders exactly what the backend's report contains, and the
-backend in turn renders exactly what `sep38-conformance`'s checks
+backend in turn renders exactly what `rfqlint`'s checks
 produce — see that repo's README for why surfacing the real HTTP status
 was itself a fix made partway through building the checker, replacing a
 more opaque JSON-parse error. Re-translating it into something friendlier

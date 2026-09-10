@@ -5,7 +5,7 @@ export function Nav() {
     <header className="mx-auto w-full max-w-3xl px-6 pt-8">
       <nav className="glass sweep flex items-center justify-between px-6 py-3">
         <Link href="/" className="font-semibold tracking-tight">
-          sep38-conformance
+          RFQLint
         </Link>
         <div className="flex items-center gap-5 text-sm text-muted">
           <Link href="/" className="hover:text-ink transition-colors">

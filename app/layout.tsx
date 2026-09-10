@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SEP-38 Conformance",
+  title: "RFQLint",
   description: "Check any Stellar anchor's SEP-38 quote server against spec, and browse on-chain verified corridors.",
 };
 
